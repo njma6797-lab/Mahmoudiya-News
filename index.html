@@ -6,8 +6,6 @@
 
 <title>Mahmoudiya News - صوت المحمودية</title>
 
-<meta name="description" content="Mahmoudiya News – تغطية إخبارية حصرية لأهم أحداث المحمودية ومحافظة البحيرة لحظة بلحظة بمصداقية واحترافية.">
-
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
 <style>
@@ -42,30 +40,37 @@ header img{
   object-fit:cover;
 }
 
-#searchButton{
-  background:#fff;
-  border:none;
-  font-size:20px;
-  cursor:pointer;
-  padding:5px 10px;
-  border-radius:50%;
-  margin-left:10px;
-}
-
-.search-box{
+/* صندوق البحث تحت الشريط الأحمر */
+#searchContainer {
   max-width:1000px;
   margin:10px auto;
   padding:0 15px;
-  display:none;
+  display:flex;
+  justify-content:flex-end;
 }
 
-.search-box input{
-  width:100%;
+#searchInput {
+  flex:1;
   max-width:400px;
   padding:10px 15px;
   font-size:16px;
   border-radius:8px;
   border:1px solid #ccc;
+}
+
+#searchBtn {
+  background:#c40000;
+  color:#fff;
+  border:none;
+  border-radius:50%;
+  width:45px;
+  height:45px;
+  font-size:20px;
+  cursor:pointer;
+  margin-left:10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 .container{
@@ -131,16 +136,16 @@ footer{
 <h1>Mahmoudiya News</h1>
 <img src="11.png" alt="Logo">
 </div>
-<button id="searchButton">🔎</button>
 </header>
 
-<div class="search-box" id="searchBox">
-  <input type="text" id="searchInput" placeholder="ابحث هنا عن أي خبر..." onkeyup="searchNews()">
+<!-- زر البحث تحت الشريط الأحمر -->
+<div id="searchContainer">
+  <input type="text" id="searchInput" placeholder="ابحث هنا عن أي خبر...">
+  <button id="searchBtn">🔎</button>
 </div>
 
 <div class="container" id="newsContainer">
 
-<!-- الأخبار هنا -->
 <!-- خبر حادث مصرع طالبان -->
 <div class="news">
 <img src="3.webp" alt="حادث تصادم">
@@ -166,7 +171,7 @@ footer{
 </div>
 </div>
 
-<!-- باقي الأخبار -->
+<!-- باقي الأخبار بالكامل كما هي -->
 <div class="news">
 <img src="FB_IMG_1770901917650.jpg" alt="توقيع بروتوكول تعاون">
 <div class="news-content">
@@ -218,14 +223,14 @@ footer{
 </footer>
 
 <script>
-// تفعيل البحث الحي
+// البحث الحي: حتى لو حرف أو كلمة أولية
 function searchNews() {
   const input = document.getElementById('searchInput').value.toLowerCase();
   const newsItems = document.querySelectorAll('.news');
   newsItems.forEach(item => {
     const title = item.querySelector('h2').innerText.toLowerCase();
     const text = item.querySelector('p').innerText.toLowerCase();
-    if(title.includes(input) || text.includes(input)){
+    if(title.startsWith(input) || text.startsWith(input) || title.includes(input) || text.includes(input)){
       item.classList.remove('hidden');
     } else {
       item.classList.add('hidden');
@@ -233,15 +238,12 @@ function searchNews() {
   });
 }
 
-// إظهار وإخفاء مربع البحث عند الضغط على الزر
-document.getElementById('searchButton').addEventListener('click', function(){
-  const box = document.getElementById('searchBox');
-  if(box.style.display === 'none' || box.style.display === ''){
-    box.style.display = 'block';
-    document.getElementById('searchInput').focus();
-  } else {
-    box.style.display = 'none';
-  }
+// البحث حي عند الكتابة
+document.getElementById('searchInput').addEventListener('keyup', searchNews);
+
+// الضغط على أيقونة البحث يركز على مربع البحث
+document.getElementById('searchBtn').addEventListener('click', function(){
+  document.getElementById('searchInput').focus();
 });
 </script>
 
